@@ -17,13 +17,13 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="ui/style.css" />
+	<link rel="stylesheet" href="ui/tipsy.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="ui/tipsy.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.show').click(function(){
-				$(this).parent().find('div ul').toggle('slide');
-				msg = $(this).html() == 'show log' ? 'hide log' : 'show log';
-				$(this).html(msg);
+			$('.noti').each(function(){
+				$(this).tipsy({title: 'alt', gravity: 's'});
 			});
 		});
 	</script>
@@ -55,7 +55,7 @@
 			<span><?php echo $date; ?></span><?php echo $obj->domain; ?>
 			<ul>
 				<?php foreach ($domain as $file => $obj): ?>
-				<li class="<?php echo $obj->success == true ? 'success' : 'failure'; ?>" alt="<?php echo $obj->date; ?>">
+				<li class="noti <?php echo $obj->success == true ? 'success' : 'failure'; ?>" alt="<?php echo $obj->date; ?>">
 				&nbsp;
 				</li>
 				<?php endforeach; ?>

@@ -74,11 +74,16 @@ li.failure {
 
 li ul {
 	display: inline;
+	float: right;
 }
 
 li ul li {
 	display: inline;
 	border: none;
+}
+
+.noti {
+	cursor: pointer;
 }
 
 /* --------------------------------- */
