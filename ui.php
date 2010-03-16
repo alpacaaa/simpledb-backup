@@ -40,8 +40,16 @@
 					if (obj.length == 1)
 						return obj.toggle('slide');
 
+					var parent = self.parents('li');
+					var date = parent.find('span').text();
+					var file = parent.text().replace(date, '').trim();
+					$.getJSON('?log=' + file, function(data){
+						console.log(data);
+					});
+
 					var div = $('<div>').attr('id', id);
-					div.append('<ul><li class="failure">aaa</li></ul>');
+					var ul = $('<ul>');
+					div.append(ul);
 
 					self.parent().parent().append(div);
 					div.toggle('slide');
