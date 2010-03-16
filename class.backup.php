@@ -44,7 +44,7 @@
 		
 		protected function dumpDb()
 		{
-			$this->log('Dump Db');
+			$this->log('Dumping databases');
 			
 			$mysql = system('which mysql');
 			$dump  = system('which mysqldump');
@@ -77,15 +77,27 @@
 			$this->log('Dump Finished');
 		}
 		
-		protected function createLog($file)
+		protected function createLog($file, $format = 'json')
 		{
-			$xml = new SimpleXMLElement('<logs></logs>');
-			foreach ($this->logs as $log)
+			$format = trim(strtolower($format));
+
+			if ($format == 'json')
 			{
-				self::obj2Xml($log, $xml, 'log');
+				$content = json_encode($this->logs);
 			}
+			elseif ($format == 'xml')
+			{
+				$xml = new SimpleXMLElement('<logs></logs>');
+				foreach ($this->logs as $log)
+				{
+					self::obj2Xml($log, $xml, 'log');
+				}
+				$content = $xml->asXML();
+			}
+			else
+				throw new Exception('Log format not supported');
 			
-			file_put_contents($file, $xml->asXML());
+			file_put_contents($file, $content);
 		}
 		
 		protected function sendFile($file, $log, $archiveDir)
@@ -101,19 +113,19 @@
 			// $this->log("Compression output \n%s", $result);
 			$this->createLog($log);
 			
-			$this->log('Sending to ssh server');
+			$this->log('Ready to send files');
 			
 			$url = Config::get($this->remote, 'url');
 			
 			include('Net/SFTP.php');
 			$sftp = new Net_SFTP($url);
-			$this->log('Connect to ssh server', $sftp);
+			$this->log('Connecting to remote server', $sftp);
 			
 			$user  = Config::get($this->remote, 'user');
 			$pass  = Config::get($this->remote, 'pass');
 			
 			$login = $sftp->login($user, $pass);
-			$this->log('Login ssh server', $login);
+			$this->log('Login to remote server', $login);
 			
 			$sftp->pwd();
 			
