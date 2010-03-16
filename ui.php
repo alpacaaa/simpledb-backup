@@ -23,7 +23,10 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.noti').each(function(){
-				$(this).tipsy({title: 'alt', gravity: 's'});
+				$(this).tipsy({title: 'alt', gravity: 's', delayIn: 0.25, delayOut: 0.17});
+				$(this).click(function(){
+					$(this).parent().parent().append('<div><ul><li class="failure">aaa</li></ul></div>');
+				});
 			});
 		});
 	</script>
@@ -53,7 +56,7 @@
 	?>
 		<li class="<?php echo $success == true ? $ok : $error; ?>">
 			<span><?php echo $date; ?></span><?php echo $obj->domain; ?>
-			<ul>
+			<ul class="notibar">
 				<?php foreach ($domain as $file => $obj): ?>
 				<li class="noti <?php echo $obj->success == true ? 'success' : 'failure'; ?>" alt="<?php echo $obj->date; ?>">
 				&nbsp;

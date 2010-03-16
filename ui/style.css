@@ -39,7 +39,6 @@ li span {
 
 div ul {
 	margin-top: 10px;
-	display: none;
 	background: #FFF;
 	border: solid 1px gray;
 	padding: 3px;
@@ -51,6 +50,7 @@ div li {
 	border: none;
 	color: #383838;
 	font-size: 85%;
+	display: block;
 }
 
 div li a:link, div li a:active, div li a:visited, div li a:hover {
@@ -72,7 +72,7 @@ li.failure {
 	background: url('16-circle-red-remove.png') left center no-repeat;
 }
 
-li ul {
+li ul.notibar {
 	display: inline;
 	float: right;
 }
