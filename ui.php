@@ -37,36 +37,30 @@
 	foreach ($dirs as $dir):
 			$integrity->setDir($dir);
 			$domain = $integrity->check();
+
+			$success = true;
+			$date = current($domain)->date;
+			reset($domain);
+
+			foreach ($domain as $file => $obj){
+				if ($obj->success !== true){
+					$success = false;
+					$date = $obj->date;
+					break;
+				}
+			}
+
 	?>
-	<?php foreach ($domain as $file => $obj): ?>
-		<li class="<?php echo $obj->success == true ? $ok : $error; ?>">
-			<span><?php echo $obj->date; ?></span><?php echo $obj->domain; ?><a class="show clean-yellow">show log</a>
-			<div>
+		<li class="<?php echo $success == true ? $ok : $error; ?>">
+			<span><?php echo $date; ?></span><?php echo $obj->domain; ?>
 			<ul>
-				<?php
-					$log = $dir. '/'. $obj->date. '-backup.log';
-					$log = file_exists($log) ? simplexml_load_file($log) : array();
-					if (!$log):
-				?>
-				<?php if ($integrity->isResolved($file)): ?>
-					<li class="success">Failed backup has been resolved</li>
-				<?php else: ?>
-					<li class="failure">Log not available.</li>
-					<li class="mark"><a href="?resolve=<?php echo $file; ?>">Stop Notify</a></li>
-				<?php
-					endif;
-					endif;
-					foreach ($log as $el):
-				?>
-				<li class="<?php echo $el->success ? 'success' : 'failure'; ?>">
-					<span>[<?php echo date('h:i:s', intval($el->time)); ?>]</span>
-					<?php echo $el->msg; ?>
+				<?php foreach ($domain as $file => $obj): ?>
+				<li class="<?php echo $obj->success == true ? 'success' : 'failure'; ?>" alt="<?php echo $obj->date; ?>">
+				&nbsp;
 				</li>
 				<?php endforeach; ?>
 			</ul>
-			</div>
 		</li>
-		<?php endforeach; ?>
 	<?php endforeach; ?>
 </body>
 </html>

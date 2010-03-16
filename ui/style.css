@@ -72,6 +72,15 @@ li.failure {
 	background: url('16-circle-red-remove.png') left center no-repeat;
 }
 
+li ul {
+	display: inline;
+}
+
+li ul li {
+	display: inline;
+	border: none;
+}
+
 /* --------------------------------- */
 /*MESSAGE BOX CLEAN	serie	  		 */
 .clean-gray{
