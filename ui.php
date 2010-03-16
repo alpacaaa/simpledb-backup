@@ -22,11 +22,31 @@
 	<script type="text/javascript" src="ui/tipsy.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+
 			$('.noti').each(function(){
 				$(this).tipsy({title: 'alt', gravity: 's', delayIn: 0.25, delayOut: 0.17});
+
 				$(this).click(function(){
-					$(this).parent().parent().append('<div><ul><li class="failure">aaa</li></ul></div>');
+
+					$('ul li div').each(function(){
+						if ($(this).is(':visible'))
+							$(this).toggle('slide');
+					});
+
+					var self = $(this);
+					var id = 'log' + self.attr('id');
+					var obj = $('#' + id);
+
+					if (obj.length == 1)
+						return obj.toggle('slide');
+
+					var div = $('<div>').attr('id', id);
+					div.append('<ul><li class="failure">aaa</li></ul>');
+
+					self.parent().parent().append(div);
+					div.toggle('slide');
 				});
+
 			});
 		});
 	</script>
@@ -53,12 +73,15 @@
 				}
 			}
 
+			$i = rand();
 	?>
 		<li class="<?php echo $success == true ? $ok : $error; ?>">
 			<span><?php echo $date; ?></span><?php echo $obj->domain; ?>
 			<ul class="notibar">
+
 				<?php foreach ($domain as $file => $obj): ?>
-				<li class="noti <?php echo $obj->success == true ? 'success' : 'failure'; ?>" alt="<?php echo $obj->date; ?>">
+				<li class="noti <?php echo $obj->success == true ? 'success' : 'failure'; ?>"
+				alt="<?php echo $obj->date; ?>" id="noti<?php echo $i++; ?>">
 				&nbsp;
 				</li>
 				<?php endforeach; ?>

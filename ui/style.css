@@ -37,8 +37,12 @@ li span {
 	margin-top: -4px;
 }
 
+ul li div {
+	display: none;
+}
+
 div ul {
-	margin-top: 10px;
+	margin: 10px 50px 0 140px;
 	background: #FFF;
 	border: solid 1px gray;
 	padding: 3px;
@@ -50,7 +54,6 @@ div li {
 	border: none;
 	color: #383838;
 	font-size: 85%;
-	display: block;
 }
 
 div li a:link, div li a:active, div li a:visited, div li a:hover {
