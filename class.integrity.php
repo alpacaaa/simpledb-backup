@@ -76,4 +76,23 @@
 		{
 			return array_search($file, $this->resolved) !== false;
 		}
+
+		public function getLog($log)
+		{
+			$log  = array_map('trim', explode('|', $log));
+			$domain = str_replace('..', '', $log[0]);
+			$date = str_replace('..', '', $log[1]);
+
+			$file = sprintf('%s/%s-backup.log', 'done/'. $domain, $date);
+
+			if (!file_exists($file)){
+				$obj = new StdClass();
+				$obj->msg = 'Log file not available.';
+				$obj->success = false;
+
+				return json_encode(array($obj));
+			}
+
+			return file_get_contents($file);
+		}
 	}

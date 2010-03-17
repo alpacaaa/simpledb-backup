@@ -37,6 +37,20 @@ li span {
 	margin-top: -4px;
 }
 
+li ul.notibar {
+	display: inline;
+	float: right;
+}
+
+li ul li {
+	display: inline;
+	border: none;
+}
+
+.noti {
+	cursor: pointer;
+}
+
 ul li div {
 	display: none;
 }
@@ -54,6 +68,7 @@ div li {
 	border: none;
 	color: #383838;
 	font-size: 85%;
+	display: block !important;
 }
 
 div li a:link, div li a:active, div li a:visited, div li a:hover {
@@ -75,19 +90,7 @@ li.failure {
 	background: url('16-circle-red-remove.png') left center no-repeat;
 }
 
-li ul.notibar {
-	display: inline;
-	float: right;
-}
 
-li ul li {
-	display: inline;
-	border: none;
-}
-
-.noti {
-	cursor: pointer;
-}
 
 /* --------------------------------- */
 /*MESSAGE BOX CLEAN	serie	  		 */

@@ -9,6 +9,10 @@
 	
 	$resolve = $_GET['resolve'];
 	if ($resolve) $integrity->resolve($resolve);
+
+	$log = $_GET['log'];
+	if ($log) die($integrity->getLog($log));
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -43,16 +47,37 @@
 					var parent = self.parents('li');
 					var date = parent.find('span').text();
 					var file = parent.text().replace(date, '').trim();
+
+					date = self.attr('alt');
+					file = file + '|' + date;
+
+
 					$.getJSON('?log=' + file, function(data){
-						console.log(data);
+						var div = $('<div>').attr('id', id);
+						var ul = $('<ul>');
+						$(data).each(function(){
+							var li = $('<li>');
+							this.success ?
+								li.addClass('success') :
+								li.addClass('failure');
+
+							var time = new Date(this.time * 1000);
+								time = [time.getHours(), time.getMinutes(), time.getSeconds()];
+								time = time.map(function(el){
+									el = el.toString();
+									return el.length == 1 ? el + '0' : el;
+								});
+
+							var html = '<span>[' + time.join(':') + ']</span>' + this.msg;
+							li.html(html);
+							ul.append(li);
+						});
+
+						div.append(ul);
+
+						self.parent().parent().append(div);
+						div.toggle('slide');
 					});
-
-					var div = $('<div>').attr('id', id);
-					var ul = $('<ul>');
-					div.append(ul);
-
-					self.parent().parent().append(div);
-					div.toggle('slide');
 				});
 
 			});
@@ -65,6 +90,7 @@
 	<h1>Backup Status</h1>
 	<ul>
 	<?php
+	$i = 1;
 	foreach ($dirs as $dir):
 			$integrity->setDir($dir);
 			$domain = $integrity->check();
@@ -80,8 +106,6 @@
 					break;
 				}
 			}
-
-			$i = rand();
 	?>
 		<li class="<?php echo $success == true ? $ok : $error; ?>">
 			<span><?php echo $date; ?></span><?php echo $obj->domain; ?>
