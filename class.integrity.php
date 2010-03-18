@@ -2,13 +2,18 @@
 
 	class Integrity {
 		
-		protected $dir, $days, $resolved;
+		protected $dir;
+		protected $root;
+		protected $days;
+		protected $resolved = array();
 		
-		public function __construct(){
+		public function __construct($root = 'DT-server'){
 			if (file_exists('resolved'))
 				$this->resolved = unserialize(file_get_contents('resolved'));
 			else
 				$this->resolved = array();
+
+			$this->root = $root. '/';
 		}
 		
 		public function purge()
@@ -83,16 +88,36 @@
 			$domain = str_replace('..', '', $log[0]);
 			$date = str_replace('..', '', $log[1]);
 
-			$file = sprintf('%s/%s-backup.log', 'done/'. $domain, $date);
+			$file = sprintf('%s/%s-backup.log', $this->root. $domain, $date);
 
 			if (!file_exists($file)){
+				$result = array();
+
 				$obj = new StdClass();
 				$obj->msg = 'Log file not available.';
 				$obj->success = false;
+				$obj->time = 0;
+				$result[] = $obj;
 
-				return json_encode(array($obj));
+				$obj = new StdClass();
+				$file = str_replace('-backup.log', '.tar.gz', $file);
+
+				$this->isResolved($file) ?
+					$obj->msg = 'Notifications for this failed backup are off.'  :
+					$obj->msg = '<a href="?resolve='. $file. '">Stop notify</a>';
+
+				$obj->success = true;
+				$obj->time = 0;
+				$result[] = $obj;
+
+				return json_encode($result);
 			}
 
 			return file_get_contents($file);
+		}
+
+		public function discover()
+		{
+			return glob($this->root. '*', GLOB_ONLYDIR);
 		}
 	}
