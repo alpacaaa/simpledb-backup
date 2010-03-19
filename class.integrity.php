@@ -20,7 +20,7 @@
 		{
 			shell_exec(
 				sprintf('find %s/* -mtime +%s -exec rm {} \\',
-				$this->dir, $this->days
+				$this->dir, $this->days +1
 			));
 		}
 		
@@ -40,9 +40,9 @@
 				$obj = new StdClass();
 				$obj->success =
 					array_search($file, $files) !== false || 
-					array_search($file, $this->resolved) !== false;
+					$this->isResolved($file);
 				$obj->date = str_replace(',', '.', $date);
-				$obj->domain = array_pop(explode('/', trim($this->dir, '/')));
+				$obj->domain = self::cleanUp($this->dir);
 				
 				$result[$file] = $obj;
 				$d--;
@@ -61,9 +61,14 @@
 			);
 		}
 		
+		public static function cleanUp($string)
+		{
+			return array_pop(explode('/', trim($string, '/')));
+		}
+
 		public function setDays($days)
 		{
-			$this->days = $days;
+			$this->days = $days -1;
 		}
 		
 		public function setDir($dir)
@@ -73,13 +78,13 @@
 		
 		public function resolve($file)
 		{
-			$this->resolved[] = $file;
+			$this->resolved[] = self::cleanUp($file);
 			file_put_contents('resolved', serialize($this->resolved));
 		}
 		
 		public function isResolved($file)
 		{
-			return array_search($file, $this->resolved) !== false;
+			return array_search(self::cleanUp($file), $this->resolved) !== false;
 		}
 
 		public function getLog($log)
@@ -103,7 +108,7 @@
 				$file = str_replace('-backup.log', '.tar.gz', $file);
 
 				$this->isResolved($file) ?
-					$obj->msg = 'Notifications for this failed backup are off.'  :
+					$obj->msg = 'Notifications for this failed backup are off.' :
 					$obj->msg = '<a href="?resolve='. $file. '">Stop notify</a>';
 
 				$obj->success = true;
