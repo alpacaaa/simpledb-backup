@@ -11,7 +11,7 @@ $(document).ready(function() {
 			});
 
 			var self = $(this);
-			var id = 'log' + self.attr('id');
+			var id = 'log' + self.attr('class').split(' ').pop();
 			var obj = $('#' + id);
 
 			if (obj.length == 1)

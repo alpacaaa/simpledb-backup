@@ -60,8 +60,8 @@
 			<ul class="notibar">
 
 				<?php foreach ($domain as $file => $obj): ?>
-				<li class="noti <?php echo $obj->success == true ? $css['success'] : $css['failure']; ?>"
-				alt="<?php echo $obj->domain. ' - '. $obj->date; ?>" id="noti<?php echo $i++; ?>">
+				<li class="noti <?php echo $obj->success == true ? $css['success'] : $css['failure']; ?> <?php echo $i++; ?>"
+				alt="<?php echo $obj->domain. ' - '. $obj->date; ?>">
 				&nbsp;
 				</li>
 				<?php endforeach; ?>
