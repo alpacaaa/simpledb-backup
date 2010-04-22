@@ -78,6 +78,8 @@
 		
 		public function resolve($file)
 		{
+			if ($this->isResolved($file)) return;
+
 			$this->resolved[] = self::cleanUp($file);
 			file_put_contents('resolved', serialize($this->resolved));
 		}
