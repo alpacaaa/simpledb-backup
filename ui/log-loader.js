@@ -5,15 +5,15 @@ $(document).ready(function() {
 
 		$(this).click(function(){
 
-			$('ul li div').each(function(){
+			var self = $(this);
+			var id = 'log' + self.attr('class').split(' ').pop();
+
+			$("ul li div[id!='" + id + "']").each(function(){
 				if ($(this).is(':visible'))
 					$(this).toggle('slide');
 			});
 
-			var self = $(this);
-			var id = 'log' + self.attr('class').split(' ').pop();
 			var obj = $('#' + id);
-
 			if (obj.length == 1)
 				return obj.toggle('slide');
 
