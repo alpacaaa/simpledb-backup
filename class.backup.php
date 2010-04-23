@@ -135,8 +135,6 @@
 				$this->log('Change dir', $res);
 			}
 			
-			$this->createLog($archiveDir. '/'. $log);
-			sleep(5);
 			$files = glob($archiveDir. '/*');
 			
 			foreach ($files as $file)
@@ -147,6 +145,11 @@
 			}
 			
 			$this->log('Backup Completed');
+
+			$file = $archiveDir. '/'. $log;
+			$this->createLog($file);
+			$sftp->put($log, $file, NET_SFTP_LOCAL_FILE);
+
 		}
 		
 		protected function log($msg, $res = null, $replace = '%s')

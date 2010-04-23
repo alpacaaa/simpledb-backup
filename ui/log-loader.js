@@ -34,7 +34,7 @@ $(document).ready(function() {
 						time = [time.getHours(), time.getMinutes(), time.getSeconds()];
 						time = time.map(function(el){
 							el = el.toString();
-							return el.length == 1 ? el + '0' : el;
+							return el.length == 1 ? '0' + el : el;
 						});
 
 						time = '<span>[' + time.join(':') + ']</span>';
