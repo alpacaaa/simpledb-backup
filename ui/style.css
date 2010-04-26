@@ -29,6 +29,20 @@ li span {
 	/*color: white;*/
 }
 
+li span:last-child {
+	margin-right: 0px;
+	padding: 7px;
+	padding-left: 25px;
+	float: right;
+	cursor: pointer;
+	background: url('close.png') 9% 55% no-repeat #ccc;
+	border: 1px solid #aaa;
+	font-size: 95%;
+	color: #1a1a1a;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
 .show {
 	color: #A1A199;
 	float: right;

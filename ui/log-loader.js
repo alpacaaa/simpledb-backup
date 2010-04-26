@@ -22,7 +22,7 @@ $(document).ready(function() {
 			$.getJSON('?log=' + file, function(data){
 				var div = $('<div>').attr('id', id);
 				var ul = $('<ul>');
-				$(data).each(function(){
+				$(data).each(function(i){
 					var li = $('<li>');
 					this.success ?
 						li.addClass('success') :
@@ -42,6 +42,22 @@ $(document).ready(function() {
 
 					var html = time + this.msg;
 					li.html(html);
+
+					if (i == 0) {
+						close = $('<span>');
+						close.text('close');
+						close.click(function() {
+
+							$("ul li div").each(function(){
+								if ($(this).is(':visible'))
+									$(this).toggle('slide');
+							});
+						});
+
+						li.append(close);
+					}
+
+
 					ul.append(li);
 				});
 
