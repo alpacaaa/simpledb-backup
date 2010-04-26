@@ -29,7 +29,7 @@ li span {
 	/*color: white;*/
 }
 
-li span:last-child {
+li span.close {
 	margin-right: 0px;
 	padding: 7px;
 	padding-left: 25px;

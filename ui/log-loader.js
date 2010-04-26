@@ -46,6 +46,7 @@ $(document).ready(function() {
 					if (i == 0) {
 						close = $('<span>');
 						close.text('close');
+						close.addClass('close');
 						close.click(function() {
 
 							$("ul li div").each(function(){
