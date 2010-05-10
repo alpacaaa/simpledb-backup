@@ -17,17 +17,11 @@
 		
 		public function doBackup()
 		{
-			$dir = Config::get($this->local, 'temp', 'backup');
-			$this->tempDir = $dir;
-			
-			shell_exec(sprintf('rm -rf %s/*', $dir));
-
-			$this->dumpDb();
-			
 			$log = Config::get($this->local, 'logfile', date("Y-m-d"). '-backup.log');			
-			$file = Config::get($this->local, 'filename', date("Y-m-d"). '.tar.gz');
+			$file = Config::get($this->local, 'filename', date("Y-m-d"). '.zip');
 			$archiveDir = Config::get($this->local, 'archive-dir', 'done');
 			
+			$this->dumpDb($archiveDir. '/'. $file);
 			$this->sendFile($file, $log, $archiveDir);
 		}
 		
@@ -42,25 +36,19 @@
 			shell_exec(sprintf('rm -rf %s/*', $dir));
 		}
 		
-		protected function dumpDb()
+		protected function dumpDb($filename)
 		{
 			$this->log('Dumping databases');
 			
-			$mysql = system('which mysql');
-			$dump  = system('which mysqldump');
-			
 			$user  = Config::get($this->local, 'user');
 			$pass  = Config::get($this->local, 'pass');
-			if ($pass !== '') $pass = '-p'. $pass;
 			
-			$dbs = explode("\n", shell_exec(
-				sprintf("%s -u %s %s -Bse 'show databases'",
-				$mysql, $user, $pass
-				)));
-			
+			$dumper = new Mysqldumper('localhost', $user, $pass);
+			$dbs = $dumper->listDbs();
 			// $this->log('Databases: %s', implode(', ', $dbs));
 			
-			$dir = $this->tempDir;
+			$zip = new ZipArchive();
+			$zip->open($filename, ZIPARCHIVE::CREATE);
 			
 			foreach ($dbs as $db)
 			{
@@ -68,13 +56,14 @@
 				
 				$this->log('Dump db %s', $db);
 				
-				shell_exec(sprintf(
-					"%s --opt -h localhost -u %s %s %s | gzip > %s/%s_%s.sql.gz",
-					$dump, $user, $pass, $db, $dir, date("Y-m-d"), $db
-					));
+				$dumper->setDBname($db);
+				$dump = $dumper->createDump();
+				$zip->addFromString($db.'.sql', $dump);
 			}
 			
 			$this->log('Dump Finished');
+			$this->log('Zipped Files: %s', $zip->numFiles);
+			$zip->close();
 		}
 		
 		protected function createLog($file, $format = 'json')
@@ -102,19 +91,9 @@
 		
 		protected function sendFile($file, $log, $archiveDir)
 		{
-			$this->log('Compressing');
-			
-			$dir = $this->tempDir;
-			$result = shell_exec(
-				sprintf("tar -cvzf %s %s/*",
-				$archiveDir. '/'. $file, $dir
-				));
-			
-			// $this->log("Compression output \n%s", $result);
-			$this->createLog($log);
-			
+			$this->createLog($archiveDir. '/'. $log);
 			$this->log('Ready to send files');
-			
+
 			$url = Config::get($this->remote, 'url');
 			
 			include('Net/SFTP.php');
@@ -136,12 +115,15 @@
 			}
 			
 			$files = glob($archiveDir. '/*');
+			$success = true;
 			
 			foreach ($files as $file)
 			{
 				$clean = array_pop(explode('/', $file));
 				$upload = $sftp->put($clean, $file, NET_SFTP_LOCAL_FILE);
 				$this->log('Uploading '. $clean, $upload);
+
+				if (!$upload) $success = false;
 			}
 			
 			$this->log('Backup Completed');
@@ -150,6 +132,7 @@
 			$this->createLog($file);
 			$sftp->put($log, $file, NET_SFTP_LOCAL_FILE);
 
+			if ($success) $this->purge($archiveDir);
 		}
 		
 		protected function log($msg, $res = null, $replace = '%s')
