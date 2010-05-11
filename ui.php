@@ -26,7 +26,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="ui/style.css" />
+	<link rel="stylesheet" href="ui/ui.css" />
 	<link rel="stylesheet" href="ui/tipsy.css" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script type="text/javascript" src="ui/tipsy.js"></script>
@@ -34,7 +34,20 @@
 	<title>Backup Status</title>
 </head>
 <body>
-	
+	<div class="topnav">
+		<span style="float: left;">
+		<?php echo date('d F Y'); ?>
+		-
+		Tracking <span style="color: white; font-weight: bold;">
+		<?php echo count($dirs); ?></span> servers
+		</span>
+
+		<span style="float: right;">
+			<a class="add" href="manage.php">Add a new server</a>
+			<a class="manage" href="manage.php">Manage servers</a>
+		</span>
+		<div style="clear: both;"></div>
+	</div>
 	<h1>Backup Status</h1>
 	<ul>
 	<?php

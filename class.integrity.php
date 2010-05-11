@@ -26,7 +26,7 @@
 		
 		public function check()
 		{
-			$files = glob($this->dir. '/*.tar.gz');
+			$files = glob($this->dir. '/*.zip');
 			$stamp = self::getStamp(intval(date('j') - $this->days));
 			$d = $this->days;
 			$result = array();
@@ -35,7 +35,7 @@
 			{
 				$process = self::getStamp($d);
 				$date = date('Y-m-d', $process);
-				$file = $this->dir. '/'. $date. '.tar.gz';
+				$file = $this->dir. '/'. $date. '.zip';
 				
 				$obj = new StdClass();
 				$obj->success =
@@ -107,7 +107,7 @@
 				$result[] = $obj;
 
 				$obj = new StdClass();
-				$file = str_replace('-backup.log', '.tar.gz', $file);
+				$file = str_replace('-backup.log', '.zip', $file);
 
 				$this->isResolved($file) ?
 					$obj->msg = 'Notifications for this failed backup are off.' :

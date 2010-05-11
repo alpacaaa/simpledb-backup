@@ -9,6 +9,32 @@ h1 {
 	text-align: center;
 }
 
+.topnav {
+	background: #0d86d9;
+	color: #b7dffb;
+	margin-top: -20px;
+	padding: 3px 10%;
+	font-size: 90%;
+}
+
+.topnav a:active,
+.topnav a:visited,
+.topnav a:visited,
+.topnav a:link {
+	color: #d7edfd;
+	text-decoration: none;
+	padding-left: 20px;
+}
+
+.topnav .add {
+	background: url('add.png') left no-repeat;
+}
+
+.topnav .manage {
+	background: url('server.png') left no-repeat;
+	margin-left: 10px;
+}
+
 ul {
 	list-style: none;
 	margin: 0 50px 0 50px;
