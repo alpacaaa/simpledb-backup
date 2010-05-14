@@ -1,0 +1,107 @@
+
+body {
+	margin: 0;
+	padding: 20px;
+	font-family: 'Verdana';
+}
+
+h1 {
+	text-align: center;
+}
+
+a:active,
+a:visited,
+a:link {
+	text-decoration: none;
+	color: #0d86d9;
+	font-weight: bold;
+}
+
+a:hover {
+	background: #0d86d9;
+	color: #f7fcff;
+	padding: 2px;
+}
+
+a:active.add,
+a:visited.add,
+a:hover.add,
+a:link.add {
+	padding: 12px 12px 12px 20px;
+	background: #0d86d9 url('add.png') left no-repeat;
+	color: #f7fcff;
+	font-size: 110%;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px;
+	float: right;
+}
+
+a:active.edit,
+a:visited.edit,
+a:hover.edit,
+a:link.edit {
+	padding: 12px 12px 12px 20px;
+	background: #0d86d9 url('server.png') left no-repeat;
+	color: #f7fcff;
+	font-size: 110%;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px;
+	float: right;
+}
+
+.main {
+	clear: both;
+	padding: 0 0 20px 20px;
+}
+
+.action {
+	background: #0d86d9;
+	color: white;
+	padding: 20px;
+	margin-bottom: 40px;
+	text-align: center;
+}
+
+.action form fieldset {
+	width: 25%;
+	display: inline;
+	border: none;
+	vertical-align: top;
+}
+
+legend {
+	font-weight: bold;
+}
+
+.action form label {
+	margin-right: 0.5em;
+	width: 2em;
+	float: left;
+	display: block;
+}
+
+.action form input {
+	margin-left: 1.5em;
+	border: none;
+}
+
+.action form input[type='submit'] {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 5px;
+}
+
+ul {
+	text-align: center;
+	list-style: none;
+}
+
+.message{
+	border:solid 1px #349534;
+	background:#C9FFCA;
+	color:#008000;
+	font-weight:bold;
+	padding:4px;
+	text-align:center;
+	margin-bottom: 10px;
+}

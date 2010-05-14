@@ -40,10 +40,10 @@
 		{
 			$this->log('Dumping databases');
 			
-			$user  = Config::get($this->local, 'user');
-			$pass  = Config::get($this->local, 'pass');
+			$user = Config::get($this->local, 'user');
+			$pass = Config::get($this->local, 'pass');
 			
-			$dumper = new Mysqldumper('localhost', $user, $pass);
+			$dumper = new MySQLDump('localhost', $user, $pass);
 			$dbs = $dumper->listDbs();
 			// $this->log('Databases: %s', implode(', ', $dbs));
 			
@@ -56,9 +56,15 @@
 				
 				$this->log('Dump db %s', $db);
 				
-				$dumper->setDBname($db);
-				$dump = $dumper->createDump();
-				$zip->addFromString($db.'.sql', $dump);
+				$dump = $dumper->dumpDatabase($db);
+				$ext  = '.sql';
+
+				if (function_exists('gzencode')) {
+					$dump = gzencode($dump, 9);
+					$ext .= '.gz';
+				}
+
+				$zip->addFromString($db.$ext, $dump);
 			}
 			
 			$this->log('Dump Finished');

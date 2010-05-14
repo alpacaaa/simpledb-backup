@@ -44,7 +44,7 @@
 
 		<span style="float: right;">
 			<a class="add" href="manage.php">Add a new server</a>
-			<a class="manage" href="manage.php">Manage servers</a>
+			<a class="manage" href="manage.php#manage">Manage servers</a>
 		</span>
 		<div style="clear: both;"></div>
 	</div>
